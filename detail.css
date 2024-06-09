@@ -175,7 +175,12 @@ hr{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-input{
+#quantity{
+    margin: 5px;
+    /* padding: 10px; */
+}
+
+#pesan{
     background-color: #0C134F;
     border: none;
     border-radius: 50px;
@@ -191,11 +196,10 @@ input{
     transition: 0.5s;
 }
 
-input:hover{
+#pesan:hover{
     color: #0C134F;
     background-color: #4a59ff;
 }
-
 
 footer{
     background-color: rgb(89, 62, 168);
