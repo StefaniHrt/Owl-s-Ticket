@@ -18,11 +18,23 @@ header {
     z-index: 1000;
     top: 0;
     font-family: Arial, sans-serif;
+    padding-bottom: 5px;
 }
 
 header img {
     height: 50px;
     margin-left: 1.5%;
+}
+
+header button{
+    border-radius: 25px;
+    height: 35px;
+    width: 70px;
+    margin-top: 10px;
+    img{
+        width: 20px;
+        height: 20px;
+    }
 }
 
 /* nav{

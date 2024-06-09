@@ -10,7 +10,10 @@
     <main>
         <header>
             <img src="img/owlsticketlogo.png" alt="logo owl's ticket">
-            <input type="text" class="search" placeholder="Search the Concerts"> 
+            <form method="POST" action="">
+                <input type="text" name="search" class="search" placeholder="Search the Concert">
+                <button type="submit" name="submit_search"><img src="img/search.png"></button>
+            </form>
             <nav>
                 <ul>
                     <li><a href="#">About Us</a></li>
@@ -44,7 +47,7 @@
                         <th>
                             <h1>UPCOMING CONCERTS</h1>
                         </th>
-                        <th>
+                        <!-- <th>
                             <select class="loc">
                                 <option value="location">--- LOCATION --- </option>
                                 <option value="jkt">DKI JAKARTA</option>
@@ -61,48 +64,110 @@
                         </th>
                         <th>
                             <input type="date" class="dt">
-                        </th>
+                        </th> -->
                     </tr>
                 </thead>
             </table>
             <br>
-            
             <?php
-        include 'connection.php';
+include 'connection.php';
 
-        $sql = "SELECT k.ID_konser, k.nama_konser, k.tanggal_awal, k.tanggal_akhir, k.venue, k.poster, 
-                    MIN(c.harga) as harga_terendah, MAX(c.harga) as harga_tertinggi 
-                FROM konser k
-                JOIN kursi c ON k.ID_konser = c.ID_konser
-                GROUP BY k.ID_konser";
-        $result = $conn->query($sql);
+if (isset($_POST['submit_search'])) {
+    // Ambil input pencarian
+    $search = isset($_POST['search']) ? strtolower($_POST['search']) : '';
+    $search = mysqli_real_escape_string($conn, $search);
 
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                echo "<table class='concerts'>";
-                echo "<tr>";
-                echo "<td class='poster'><img src='img/" . $row["poster"] . "' width='157px' height='222px' alt='" . $row["poster"] . "'></td>";
-                echo "<td class='desc'>";
-                echo "<span class='judul'>" . $row["nama_konser"] . "</span>";
-                echo "<p class='date'>" . date("d F Y", strtotime($row["tanggal_awal"]));
-                if ($row["tanggal_akhir"]) {
-                    echo " - " . date("d F Y", strtotime($row["tanggal_akhir"]));
-                }
-                echo "</p>";
-                echo "<p class='place'>" . $row["venue"] . "<p>";
-                echo "<p class='price'>Rp " . number_format($row["harga_terendah"]) . " - Rp " . number_format($row["harga_tertinggi"]) . "<p>";
-                echo "<br>";
-                echo "<a href='details.php?ID_konser=" . $row["ID_konser"] . "'>SEE DETAILS</a>"; 
-                echo "</td>";
-                echo "</tr>";
-                echo "</table>";
+    // Query pencarian
+    $sql = "SELECT k.ID_konser, k.nama_konser, k.tanggal_awal, k.tanggal_akhir, k.venue, k.poster, 
+                MIN(c.harga) AS harga_terendah, MAX(c.harga) AS harga_tertinggi 
+            FROM konser k
+            JOIN kursi c ON k.ID_konser = c.ID_konser
+            LEFT JOIN artis_konser ak ON k.ID_konser = ak.ID_konser
+            LEFT JOIN artis a ON ak.ID_artis = a.ID_artis
+            WHERE k.tanggal_akhir >= CURDATE()";
+
+    // Tambahkan kondisi pencarian jika input tidak kosong
+    if (!empty($search)) {
+        $sql .= " AND (
+                    LOWER(k.nama_konser) LIKE '%$search%' OR 
+                    LOWER(a.nama_artis) LIKE '%$search%' OR 
+                    LOWER(k.lokasi) LIKE '%$search%' OR 
+                    LOWER(k.venue) LIKE '%$search%' OR 
+                    LOWER(k.tanggal_awal) LIKE '%$search%' OR 
+                    LOWER(k.tanggal_akhir) LIKE '%$search%'
+                )";
+    }
+
+    $sql .= " GROUP BY k.ID_konser";
+
+    // Eksekusi query
+    $result = mysqli_query($conn, $sql);
+
+    if ($result->num_rows > 0) {
+        // Tampilkan hasil pencarian
+        while($row = $result->fetch_assoc()) {
+            echo "<table class='concerts'>";
+            echo "<tr>";
+            echo "<td class='poster'><img src='img/" . $row["poster"] . "' width='157px' height='222px' alt='" . $row["poster"] . "'></td>";
+            echo "<td class='desc'>";
+            echo "<span class='judul'>" . $row["nama_konser"] . "</span>";
+            echo "<p class='date'>" . date("d F Y", strtotime($row["tanggal_awal"]));
+            if ($row["tanggal_akhir"]) {
+                echo " - " . date("d F Y", strtotime($row["tanggal_akhir"]));
             }
-        } else {
-            echo "0 results";
+            echo "</p>";
+            echo "<p class='place'>" . $row["venue"] . "<p>";
+            echo "<p class='price'>Rp " . number_format($row["harga_terendah"]) . " - Rp " . number_format($row["harga_tertinggi"]) . "<p>";
+            echo "<br>";
+            echo "<a href='details.php?ID_konser=" . $row["ID_konser"] . "'>SEE DETAILS</a>"; 
+            echo "</td>";
+            echo "</tr>";
+            echo "</table>";
         }
+    } else {
+        echo "0 results";
+    }
+} else {
+    // Tampilkan semua konser jika tombol search tidak ditekan
+    $sql = "SELECT k.ID_konser, k.nama_konser, k.tanggal_awal, k.tanggal_akhir, k.venue, k.poster, 
+                MIN(c.harga) AS harga_terendah, MAX(c.harga) AS harga_tertinggi 
+            FROM konser k
+            JOIN kursi c ON k.ID_konser = c.ID_konser
+            GROUP BY k.ID_konser";
 
-        $conn->close();
-        ?>
+    // Eksekusi query
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Tampilkan semua konser
+        while($row = $result->fetch_assoc()) {
+            echo "<table class='concerts'>";
+            echo "<tr>";
+            echo "<td class='poster'><img src='img/" . $row["poster"] . "' width='157px' height='222px' alt='" . $row["poster"] . "'></td>";
+            echo "<td class='desc'>";
+            echo "<span class='judul'>" . $row["nama_konser"] . "</span>";
+            echo "<p class='date'>" . date("d F Y", strtotime($row["tanggal_awal"]));
+            if ($row["tanggal_akhir"]) {
+                echo " - " . date("d F Y", strtotime($row["tanggal_akhir"]));
+            }
+            echo "</p>";
+            echo "<p class='place'>" . $row["venue"] . "<p>";
+            echo "<p class='price'>Rp " . number_format($row["harga_terendah"]) . " - Rp " . number_format($row["harga_tertinggi"]) . "<p>";
+            echo "<br>";
+            echo "<a href='details.php?ID_konser=" . $row["ID_konser"] . "'>SEE DETAILS</a>"; 
+            echo "</td>";
+            echo "</tr>";
+            echo "</table>";
+        }
+    } else {
+        echo "0 results";
+    }
+}
+
+// Tutup koneksi
+$conn->close();
+?>
+
         </div>
     </main>
     <footer>
