@@ -38,7 +38,11 @@ include 'connection.php';
                 </ul>
             </nav>
         </header>
-        <h1>Hi, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
+        <?php
+        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+            echo '<h1>Hi, ' . htmlspecialchars($_SESSION['username']) . '!</h1>';
+        }
+        ?>
         <h1>HOW TO ORDER: </h1>
         <div class="steps">
             <div class="step">
