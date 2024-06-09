@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owl's Ticket - Pemesanan</title>
+    <link rel="stylesheet" href="pemesanan.css">
+</head>
+<body>
+    <header>
+        <img src="img/owlsticketlogo.png" alt="logo owl's ticket">
+        <nav>
+            <ul>
+                <li><a href="main_page.html">Main Page</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <h1>HOW TO ORDER: </h1>
+    <div class="steps">
+      <div class="step">
+        <img src="/img/step_01.png" width="150px" height="150px">
+        <p>1. Find the Concert</p>
+      </div>
+      <div class="step">
+        <img src="/img/step_02.png" width="150px" height="150px">
+        <p>2. Read the Details</p>
+      </div>
+      <div class="step">
+        <img src="/img/step_03.png" width="150px" height="150px">
+        <p>3. Fill the Form</p>
+      </div>
+      <div class="step">
+        <img src="/img/step_04.png" width="150px" height="150px">
+        <p>4. Pay the Ticket</p>
+      </div>
+    </div>
+    
+    <a href="detail_iu.html" class="backbutton">
+        <img src="img/back.png" alt="backbutton">
+    </a>
+    
+    <section class="booking">
+        <h2>BOOKING FORM</h2>
+        <h3>CAT 1B SEAT</h3>
+        <p>Price: Rp. 2.900.000,- / pcs</p>
+        <form action="" method="post">
+            <h4>JUMLAH TIKET</h4>
+            <input type="number" placeholder="Ex: 3" required class="number" min="1">
+            
+            <h4>DETAIL PEMBELI</h4>
+            <div class="inputan">
+                <input type="text" placeholder="Nama Lengkap Pembeli" required>
+
+                <input type="email" placeholder="Email Pembeli (name1.example@gmail.com)" required>
+
+                <input type="text" placeholder="08xxxxxxxxxx" required>
+            </div>
+
+
+            <div class="submitcontainer">
+                <button type="submit">Continue to Payment</button>
+            </div>
+        </form>
+    </section>
+
+    <footer>
+        <span>2024 &copy Owl's Ticket, All rights reserved.</span>
+    </footer>
+</body>
+</html>
