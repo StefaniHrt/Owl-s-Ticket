@@ -1,0 +1,292 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* HEADER */
+header {
+    background-color: rgb(89, 62, 168);
+    color:white;
+    /* padding: 5px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    z-index: 1000;
+    top: 0;
+}
+
+header img {
+    height: 50px;
+    margin-left: 1.5%;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: cyan;
+}
+
+/* BACK BUTTON */
+.backbutton {
+    display: inline-block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-left: 25%;
+    img{
+        /* float: left; */
+        width: 17%;
+        background-color: rgb(83.1, 67.8, 98.8, 0.5);
+        border-radius: 100%;
+    }
+}
+
+.backbutton img:hover {
+    transform: scale(1.1);
+    background-color: #eee;
+    border-radius: 100%;
+}
+
+/* BODY */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(img/bg_main.jpg);
+    padding: 0;
+    width: 100%;
+    margin: 0px;
+    background-attachment: fixed;
+    background-size: 100%;
+}
+
+body p{
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+}
+
+.booking {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    padding: 25px;
+    padding-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 650px;
+    margin-top: 10px !important;
+    margin: 25px auto 0 ;
+    margin-bottom: 25px;
+    align-items: center;
+    justify-content: center;
+    }
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+h5{
+    float: right;
+    color: #aaa;
+    font-size: 10px;
+}
+
+form {
+    margin-top: 10px;
+}
+
+.payment-details .input {
+    margin-bottom: 40px;
+    margin-top: 10px;
+    width: fit-content;
+    float: left;
+    margin-right: 7px;
+}
+
+.inputan {
+    margin-bottom: 10px;
+    width: auto;
+    position: relative;
+}
+
+.inputan input,.inputan select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.inputan i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+/* PAYMENT METHOD */
+.payment-details {
+    margin-top: 20px;
+}
+
+.payment-details .input {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.payment-details label {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.payment-details .payment-option img {
+    width: 100px;
+}
+
+.boxlogo{
+    display: inline;
+}
+
+.payment-details .payment-option span {
+    font-size: 16px;
+}
+
+.payment-details input[type="radio"] {
+    opacity: 0;
+    pointer-events: none;
+    display: inline;
+}
+
+.payment-details input[type="radio"]:checked + label .payment-option {
+    background-color: #eee;
+    border-radius: 10%;
+  }
+
+.payment-option img {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    object-fit: cover;
+}
+
+.payment-option img:hover {
+    transform: scale(1.1);
+    background-color: #eee;
+    border-radius: 10%;
+}
+
+.payment-details h4{
+    margin-top: 40px;
+}
+
+.booking h4{
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+/* TOMBOL PESAN TIKET */
+.submitcontainer button {
+    background-color: #6A5ACD;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    width: 50%;
+    margin: 20px 15%;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #836FFF;
+}
+   
+.submitcontainer{
+    text-align: center;
+    margin: auto;
+}
+
+.steps{
+    display: flex;
+    padding: 30px;
+    width: 60%;
+    text-align: center;
+    margin: 10px auto;
+    margin-top: 0px;
+    padding-top: 10pxz;
+    padding-bottom: 2px !important;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.step{
+    margin: 5px auto;
+    text-align: center;
+    background-color: rgb(255, 255, 255, 0.5);
+    border-radius: 20px;
+}
+
+.step img, .step p{
+    padding: 10px;
+}
+
+.step:nth-child(3){
+    background-color: rgb(255, 255, 255, 0.5);
+    /* box-shadow: 6px 6px yellow; */
+    scale: 1.2;
+    margin: 5px 25px;
+    p{
+        color: white;
+        text-shadow: 2px 2px #0C134F;
+        /* -webkit-text-stroke: 1px #0C134F; */
+    }
+}
+
+h1{
+    font-size: 30px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    text-indent: 80px;
+    margin: 0px;
+    margin-left: 15%;
+    margin-top: 1%;
+    color: #D4ADFC;
+}
+
+
+/* FOOTER */
+footer{
+    background-color: rgb(89, 62, 168);
+    color:white;
+    text-align: center;
+    height: 50px;
+    bottom: 0px;
+    padding-top: 1.3%;
+}

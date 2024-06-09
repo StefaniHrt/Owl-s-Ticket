@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owl's Ticket - Pemesanan</title>
+    <link rel="stylesheet" href="pemesanan.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+</head>
+
+<body>
+    <header>
+        <img src="img/owlsticketlogo.png" alt="logo owl's ticket">
+        <nav>
+            <ul>
+                <li><a href="main_page.html">Main Page</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+   
+    
+    <h1>HOW TO ORDER: </h1>
+    <div class="steps">
+      <div class="step">
+        <img src="/img/step_01.png" width="150px" height="150px">
+        <p>1. Find the Concert</p>
+      </div>
+      <div class="step">
+        <img src="/img/step_02.png" width="150px" height="150px">
+        <p>2. Read the Details</p>
+      </div>
+      <div class="step">
+        <img src="/img/step_03.png" width="150px" height="150px">
+        <p>3. Fill the Form</p>
+      </div>
+      <div class="step">
+        <img src="/img/step_04.png" width="150px" height="150px">
+        <p>4. Pay the Ticket</p>
+      </div>
+    </div>
+    
+    <a href="detail_iu.html" class="backbutton"><img src="img/back.png" alt="backbutton"></a>
+    
+    <div class="booking">
+      <h2>BOOKING FORM</h2>
+    <h3>CAT 1B SEAT</h3>
+    <p>Price: Rp. 2.900.000,- / pcs</p>
+    <form action="" method="post">
+      <h4>JUMLAH TIKET</h4>
+      <div class="input">
+        <div class="inputan">
+          <input type="number" placeholder="Ex: 3" required class="number" min="1">
+        </div>
+      </div>
+    
+      <h4>DETAIL PEMBELI</h4>
+      <!-- <h5>PEMBELI 1</h5> -->
+      <div class="input">
+        <div class="inputan">
+          <input type="text" placeholder="Nama Lengkap Pembeli 1" required class="text">
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+      <div class="input">
+        <div class="inputan">
+          <input type="email" placeholder="Email Pembeli 1 (name1.example@gmail.com)" required class="text">
+          <i class="fa fa-envelope"></i>
+        </div>
+      </div>
+        
+      <div class="input">
+        <div class="inputan">
+          <input type="text" placeholder="08xxxxxxxxxx" required class="text">
+          <i class="fa fa-phone"></i>
+        </div>
+        <br>
+      </div>
+
+
+        <!-- <h5>PEMBELI 2</h5> -->
+      <div class="input">
+        <div class="inputan">
+          <input type="text" placeholder="Nama Lengkap Pembeli 2" required class="text">
+          <i class="fa fa-user"></i>
+        </div>
+      </div>
+      <div class="input">
+        <div class="inputan">
+          <input type="email" placeholder="Email Pembeli 2 (name2.example@gmail.com)" required class="text">
+          <i class="fa fa-envelope"></i>
+        </div>
+      </div>
+       
+      <div class="input">
+        <div class="inputan">
+          <input type="text" placeholder="08xxxxxxxxxx" required class="text">
+          <i class="fa fa-phone"></i>
+        </div>
+      </div>
+      <br>
+  
+        <!-- <h5>PEMBELI 3</h5> -->
+      <div class="input">
+          <div class="inputan">
+          <input type="text" placeholder="Nama Lengkap Pembeli 3" required class="text">
+          <i class="fa fa-user"></i>
+          </div>
+      </div>
+      <div class="input">
+          <div class="inputan">
+          <input type="email" placeholder="Email Pembeli 3 (name3.example@gmail.com)" required class="text">
+          <i class="fa fa-envelope"></i>
+          </div>
+      </div>
+      <div class="input">
+        <div class="inputan">
+            <input type="text" placeholder="08xxxxxxxxxx" required class="text">
+            <i class="fa fa-phone"></i>
+        </div>
+      </div>
+
+      <div class="payment-details">
+        <h4>PAYMENT METHOD</h4>
+          <div class="input">
+              <input type="radio" id="creditdebitCard" name="paymentMethod" value="creditdebitCard" required>
+              <label for="creditdebitCard">
+                <div class="payment-option">
+                    <img src="img/bank.png" alt="Credit Debit Card logo">
+                    </div>
+              </label>
+          </div>
+          <div class="input">
+              <input type="radio" id="qris" name="paymentMethod" value="qris">
+              <label for="qris">
+                <div class="payment-option">
+                  <img src="img/qris.png" alt="QRIS logo">
+                </div>
+              </label>
+          </div>
+          <div class="input">
+              <input type="radio" id="gopay" name="paymentMethod" value="gopay">
+              <label for="gopay">
+                <div class="payment-option">
+                  <img src="img/gopaypng.png" alt="GoPay logo">
+                </div>
+              </label>
+          </div>
+          <div class="input">
+            <input type="radio" id="ovo" name="paymentMethod" value="ovo">
+                <label for="ovo">
+                  <div class="payment-option">
+                    <img src="img/ovo.png" alt="OVO logo">
+                  </div>
+                </label>
+          </div>
+          <div class="input">
+            <input type="radio" id="dana" name="paymentMethod" value="dana">
+              <label for="dana">
+                <div class="payment-option">
+                  <img src="img/dana.png" alt="Dana logo">
+                </div>
+              </label>
+          </div>
+        </div>  
+    </form>
+
+    <div class="submitcontainer">
+        <button type="submit">Continue to Payment</button>
+    </div>
+  </div>
+  <footer>
+    <span>2024 &copy Owl's Ticket, All rights reserved.</span>
+  </footer>
+</body>
+</html>
