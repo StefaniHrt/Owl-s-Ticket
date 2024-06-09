@@ -2,19 +2,47 @@
 include_once "connection.php";
 session_start();
 
-// Fetch seat data
-$sql = "SELECT ID_kursi, nama_kursi, harga FROM kursi";
-$result = $conn->query($sql);
+$seatQuantities = $_GET['quantity'];
+$seatIDs = $_GET['ID_kursi'];
+$seatNames = $_GET['seat_name'];
+
+// Ensure all required data is available
+if (empty($seatQuantities) || empty($seatIDs) || empty($seatNames)) {
+    echo "No seat data found for the given ID.";
+    exit();
+}
 
 $seatData = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $seatData[] = $row;
+$totalPrice = 0;
+
+// Fetch seat details from the database and calculate total price
+foreach ($seatIDs as $index => $seatID) {
+    $quantity = (int)$seatQuantities[$seatID];
+    if ($quantity > 0) {
+        $sql = "SELECT ID_kursi, nama_kursi, harga FROM kursi WHERE ID_kursi = ?";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("Preparation failed: " . $conn->error);
+        }
+        $stmt->bind_param("i", $seatID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = $result->fetch_assoc();
+        if ($data) {
+            $data['quantity'] = $quantity;
+            $seatData[$seatID] = $data;
+            $totalPrice += $data['harga'] * $quantity;
+        }
+        $stmt->close();
     }
-} else {
-    echo "0 results";
 }
+
 $conn->close();
+
+// Store seat data and total price in session
+$_SESSION['seatData'] = $seatData;
+$_SESSION['totalPrice'] = $totalPrice;
+
 ?>
 
 <!DOCTYPE html>
@@ -68,23 +96,28 @@ $conn->close();
     
     <section class="booking">
         <h2>BOOKING FORM</h2>
-        <select id="seatCategory" onchange="updatePrice()">
-            <?php foreach ($seatData as $seat): ?>
-                <option value="<?php echo $seat['harga']; ?>">
-                    <?php echo $seat['nama_kursi']; ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
-        <p id="price">Price: Rp. 0,- / pcs</p>
+        <?php foreach ($seatData as $seatID => $data): ?>
+            <p>Seat Category: <?php echo htmlspecialchars($data['nama_kursi']); ?> - Price: Rp. <?php echo number_format($data['harga'], 0, ',', '.'); ?>,- Quantity: <?php echo $data['quantity']; ?></p>
+        <?php endforeach; ?>
         <form action="payment.php" method="post">
             <h4>JUMLAH TIKET</h4>
-            <input type="number" id="ticketQuantity" name="ticketQuantity" placeholder="Ex: 3" required class="number" min="1" oninput="updateBuyerDetails()">
-            
+            <p>Jumlah Tiket: <?php echo array_sum(array_column($seatData, 'quantity')); ?></p>
+            <input type="hidden" id="ticketQuantity" name="ticketQuantity" value="<?php echo array_sum(array_column($seatData, 'quantity')); ?>" required>
+
             <h4>DETAIL PEMBELI</h4>
             <div class="inputan" id="buyerDetails">
                 <!-- Buyer details input fields will be inserted here -->
+                <?php $index = 0; ?>
+                <?php foreach ($seatData as $seatID => $data): ?>
+                    <?php for ($i = 0; $i < $data['quantity']; $i++): ?>
+                        <h5>Data Pembeli <?php echo ++$index; ?> (Seat: <?php echo htmlspecialchars($data['nama_kursi']); ?>)</h5>
+                        <input type="text" name="buyerName[]" placeholder="Nama Lengkap Pembeli <?php echo $index; ?>" required>
+                        <input type="email" name="buyerEmail[]" placeholder="Email Pembeli <?php echo $index; ?>" required>
+                        <input type="text" name="buyerPhone[]" placeholder="08xxxxxxxxxx" required>
+                    <?php endfor; ?>
+                <?php endforeach; ?>
             </div>
-            <input type="hidden" id="totalPrice" name="totalPrice">
+            <input type="hidden" id="totalPrice" name="totalPrice" value="<?php echo $totalPrice; ?>">
             <div class="submitcontainer">
                 <button type="submit">Continue to Payment</button>
             </div>
@@ -94,60 +127,5 @@ $conn->close();
     <footer>
         <span>2024 &copy Owl's Ticket, All rights reserved.</span>
     </footer>
-
-    <script>
-        function updatePrice() {
-            const seatCategory = document.getElementById('seatCategory');
-            const selectedOption = seatCategory.options[seatCategory.selectedIndex];
-            const price = selectedOption.value;
-            const priceElement = document.getElementById('price');
-            priceElement.textContent = `Price: Rp. ${parseInt(price).toLocaleString('id-ID')},- / pcs`;
-            
-            const ticketQuantity = document.getElementById('ticketQuantity').value || 1;
-            const totalPrice = price * ticketQuantity;
-            document.getElementById('totalPrice').value = totalPrice;
-        }
-
-        function updateBuyerDetails() {
-            const ticketQuantity = document.getElementById('ticketQuantity').value;
-            const buyerDetailsContainer = document.getElementById('buyerDetails');
-            
-            // Clear existing input fields
-            buyerDetailsContainer.innerHTML = '';
-
-            // Create new input fields based on ticket quantity
-            for (let i = 1; i <= ticketQuantity; i++) {
-                const subheading = document.createElement('h5');
-                subheading.textContent = `Data Pembeli ${i}`;
-                buyerDetailsContainer.appendChild(subheading);
-
-                const nameInput = document.createElement('input');
-                nameInput.type = 'text';
-                nameInput.placeholder = `Nama Lengkap Pembeli ${i}`;
-                nameInput.required = true;
-                nameInput.classList.add('buyer-input');
-
-                const emailInput = document.createElement('input');
-                emailInput.type = 'email';
-                emailInput.placeholder = `Email Pembeli ${i} (name${i}.example@gmail.com)`;
-                emailInput.required = true;
-                emailInput.classList.add('buyer-input');
-
-                const phoneInput = document.createElement('input');
-                phoneInput.type = 'text';
-                phoneInput.placeholder = `08xxxxxxxxxx`;
-                phoneInput.required = true;
-                phoneInput.classList.add('buyer-input');
-
-                buyerDetailsContainer.appendChild(nameInput);
-                buyerDetailsContainer.appendChild(emailInput);
-                buyerDetailsContainer.appendChild(phoneInput);
-            }
-            updatePrice(); // Update the total price whenever the quantity changes
-        }
-
-        // Initial price update
-        updatePrice();
-    </script>
 </body>
 </html>
