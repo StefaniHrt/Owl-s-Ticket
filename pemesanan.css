@@ -258,7 +258,7 @@ button:hover {
     padding: 10px;
 }
 
-.step:nth-child(3){
+.step:nth-child(3), .step:nth-child(4){
     background-color: rgb(255, 255, 255, 0.5);
     /* box-shadow: 6px 6px yellow; */
     scale: 1.2;

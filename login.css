@@ -1,4 +1,5 @@
 body {
+    /* background-color: rgb(238,218,209); */
     background-image: url(img/bg_main.jpg);
     background-size: 100%;
     background-repeat: no-repeat;
@@ -11,10 +12,10 @@ body {
     background-color: white;
     margin-right: 35%;
     margin-left: 35%;
-    margin-top: 8%;
-    margin-bottom: 8%;
+    margin-top: 10%;
+    margin-bottom: 10%;
     border-radius:  8px;
-    color: #0C134F;
+    color: #123C69;
 }
 
 .head{
@@ -64,7 +65,7 @@ button{
 }
 
 button:hover{
-    background-color: rgb(92, 70, 156, 0.5);
+    background-color: rgb(172, 59, 97, 0.5);
     font-size: 100%;
 }
 
