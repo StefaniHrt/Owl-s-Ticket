@@ -90,7 +90,6 @@ include 'connection.php';
                 if (!empty($search_term)) {
                     $sql .= " where (LOWER(a.nama_artis) LIKE '%$search_term%' 
                             OR LOWER(k.lokasi) LIKE '%$search_term%' 
-                            OR LOWER(k.venue) LIKE '%$search_term%' 
                             OR k.tanggal_awal LIKE '%$search_term%' 
                             OR k.tanggal_akhir LIKE '%$search_term%')";
                 }

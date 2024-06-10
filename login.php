@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['loggedin'] = true;
         $_SESSION['username'] = $username;
         $_SESSION['ID_user'] = $user['ID_user'];
-        header("Location: main_page.php");
         echo "<script>alert('Logged In Successfully!');</script>";
+        header("Location: main_page.php");
         exit;
     } else {
         echo "<script>alert('Login Failed! Invalid username or password');</script>";
