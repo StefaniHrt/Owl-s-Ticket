@@ -33,13 +33,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
 
-        // Assuming $ID_pemesanan is obtained from the context or previous steps
-        $ID_pemesanan = 1; // Replace with actual logic to retrieve or generate ID_pemesanan
+        // Assuming $ID_user and $ID_konser are obtained from the context or previous steps
+        $ID_user = 1; // Replace with actual logic to retrieve or generate ID_user
+        $ID_konser = 1; // Replace with actual logic to retrieve or generate ID_konser
 
         // Begin transaction
         $conn->begin_transaction();
 
         try {
+            // Insert into `pemesanan` table
+            $stmt = $conn->prepare("INSERT INTO pemesanan (ID_user, ID_konser, ID_kursi, total_pembayaran, jenis_pembayaran, bukti_pembayaran) VALUES (?, ?, ?, ?, ?, ?)");
+            if (!$stmt) {
+                throw new Exception("Preparation failed: " . $conn->error);
+            }
+
+            // For the sake of simplicity, assume the ID_kursi is taken from the first seat data
+            $ID_kursi = reset($seatData)['ID_kursi'];
+
+            $stmt->bind_param("iiiiss", $ID_user, $ID_konser, $ID_kursi, $totalPrice, $paymentMethod, $fileName);
+            $stmt->execute();
+            $ID_pemesanan = $stmt->insert_id;
+
             // Insert each ticket into the `tiket` table
             $stmt = $conn->prepare("INSERT INTO tiket (ID_pemesanan, nama_lengkap, email, no_telp) VALUES (?, ?, ?, ?)");
             if (!$stmt) {
@@ -47,21 +61,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             // Loop through buyer details and insert each ticket
-            $buyerNames = $_POST['buyerName'];
-            $buyerEmails = $_POST['buyerEmail'];
-            $buyerPhones = $_POST['buyerPhone'];
+            if (isset($_POST['buyerName']) && isset($_POST['buyerEmail']) && isset($_POST['buyerPhone'])) {
+                $buyerNames = $_POST['buyerName'];
+                $buyerEmails = $_POST['buyerEmail'];
+                $buyerPhones = $_POST['buyerPhone'];
 
-            $index = 0;
-            foreach ($seatData as $seatID => $data) {
-                for ($i = 0; $i < $data['quantity']; $i++) {
-                    $buyerName = $buyerNames[$index];
-                    $buyerEmail = $buyerEmails[$index];
-                    $buyerPhone = $buyerPhones[$index];
+                $index = 0;
+                foreach ($seatData as $seatID => $data) {
+                    for ($i = 0; $i < $data['quantity']; $i++) {
+                        $buyerName = $buyerNames[$index];
+                        $buyerEmail = $buyerEmails[$index];
+                        $buyerPhone = $buyerPhones[$index];
 
-                    $stmt->bind_param("isss", $ID_pemesanan, $buyerName, $buyerEmail, $buyerPhone);
-                    $stmt->execute();
-                    $index++;
+                        // Validate non-null values
+                        if (!empty($buyerName) && !empty($buyerEmail) && !empty($buyerPhone)) {
+                            $stmt->bind_param("isss", $ID_pemesanan, $buyerName, $buyerEmail, $buyerPhone);
+                            $stmt->execute();
+                        } else {
+                            throw new Exception("Buyer details cannot be null.");
+                        }
+                        $index++;
+                    }
                 }
+            } else {
+                throw new Exception("Buyer details are not set.");
             }
 
             // Commit transaction
@@ -73,16 +96,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
 
         } catch (Exception $e) {
-        // Rollback transaction if something failed
-        $conn->rollback();
-        echo "Failed to book tickets: " . $e->getMessage();
-    }
+            // Rollback transaction if something failed
+            $conn->rollback();
+            echo "Failed to book tickets: " . $e->getMessage();
+        }
 
-    $stmt->close();
-    $conn->close();
-} else {
-    echo "Payment method or payment proof not provided.";
-}
+        $stmt->close();
+        $conn->close();
+    } else {
+        echo "Payment method or payment proof not provided.";
+    }
 }
 ?>
 
@@ -143,10 +166,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         <h4>PAYMENT METHOD</h4>
         <select id="paymentMethod" name="paymentMethod" onchange="updatePaymentMethod()">
-            <option value="virtual_account">Virtual Account</option>
-            <option value="gopay">GoPay</option>
-            <option value="ovo">OVO</option>
-            <option value="dana">Dana</option>
+            <option value="Virtual Account">Virtual Account</option>
+            <option value="Gopay">GoPay</option>
+            <option value="OVO">OVO</option>
+            <option value="Dana">Dana</option>
         </select>
         
         <p id="virtualAccount">Virtual Account: 1229876548</p>
@@ -168,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     function updatePaymentMethod() {
         const paymentMethod = document.getElementById('paymentMethod').value;
         const virtualAccountElement = document.getElementById('virtualAccount');
-        if (paymentMethod === 'virtual_account') {
+        if (paymentMethod === 'Virtual Account') {
             virtualAccountElement.textContent = 'Virtual Account: 1229876548';
         } else {
             virtualAccountElement.textContent = 'Virtual Account: 1229876550';
