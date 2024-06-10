@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2024 at 03:39 PM
+-- Generation Time: Jun 10, 2024 at 04:23 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -191,9 +191,9 @@ INSERT INTO `kursi` (`ID_kursi`, `ID_konser`, `nama_kursi`, `tanggal`, `harga`, 
 (57, 5, '(Presale 1) Diamond Special Show', '2024-07-06', 3000000, 15),
 (58, 5, '(Presale 1) VIP Special Show', '2024-07-06', 6000000, 12),
 (59, 5, 'Tiket Reguler - Festival', '2024-07-07', 402500, 52),
-(60, 5, '(Presale 1) Gold Special Show', '2024-07-07', 540000, 28),
-(61, 5, '(Presale 1) Diamond Special Show', '2024-07-07', 900000, 13),
-(62, 5, '(Presale 1) VIP Special Show', '2024-07-07', 1200000, 9);
+(60, 5, '(Presale 1) Gold Special Show', '2024-07-07', 1080000, 28),
+(61, 5, '(Presale 1) Diamond Special Show', '2024-07-07', 3000000, 13),
+(62, 5, '(Presale 1) VIP Special Show', '2024-07-07', 6000000, 9);
 
 -- --------------------------------------------------------
 
@@ -207,7 +207,8 @@ CREATE TABLE `pemesanan` (
   `ID_konser` int(11) NOT NULL,
   `ID_kursi` int(11) NOT NULL,
   `total_pembayaran` int(11) NOT NULL,
-  `jenis_pembayaran` enum('Virtual Account','QRIS','Gopay','OVO','Dana') NOT NULL
+  `jenis_pembayaran` enum('Virtual Account','QRIS','Gopay','OVO','Dana') NOT NULL,
+  `bukti_pembayaran` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
