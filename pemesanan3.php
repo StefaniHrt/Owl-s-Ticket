@@ -1,3 +1,4 @@
+
 <?php
 include_once "connection.php";
 session_start();
@@ -100,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             echo "Tickets successfully booked!";
             // Optionally, redirect to a success or confirmation page
-            header('Location: booking.php');
+            header('Location: confirmation.php');
             exit();
 
         } catch (Exception $e) {
@@ -162,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
     
-    <a href="details.php" class="backbutton">
+    <a href="detail_iu.html" class="backbutton">
         <img src="img/back.png" alt="backbutton">
     </a>
     
@@ -171,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php foreach ($seatData as $seatID => $data): ?>
             <p>Seat Category: <?php echo htmlspecialchars($data['nama_kursi']); ?> - Price: Rp. <?php echo number_format($data['harga'], 0, ',', '.'); ?>,- Quantity: <?php echo $data['quantity']; ?></p>
         <?php endforeach; ?>
-        <form id="bookingForm" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" enctype="multipart/form-data">
+        <form id="bookingForm" action="payment.php" method="post" enctype="multipart/form-data">
             <h4>JUMLAH TIKET</h4>
             <p>Jumlah Tiket: <?php echo array_sum(array_column($seatData, 'quantity')); ?></p>
             <input type="hidden" id="ticketQuantity" name="ticketQuantity" value="<?php echo array_sum(array_column($seatData, 'quantity')); ?>" required>
@@ -236,5 +237,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Initial update for payment method
     updatePaymentMethod();
 </script>
+
+<script>
+function validateForm() {
+    const buyerNames = document.getElementsByName("buyerName[]");
+    const buyerEmails = document.getElementsByName("buyerEmail[]");
+    const buyerPhones = document.getElementsByName("buyerPhone[]");
+
+    let uniqueBuyers = new Set();
+
+    for (let i = 0; i < buyerNames.length; i++) {
+        const buyerName = buyerNames[i].value.trim();
+        const buyerEmail = buyerEmails[i].value.trim();
+        const buyerPhone = buyerPhones[i].value.trim();
+
+        const buyerInfo = buyerName + "-" + buyerEmail + "-" + buyerPhone;
+
+        if (uniqueBuyers.has(buyerInfo)) {
+            alert("Pembeli dengan detail yang sama telah dimasukkan sebelumnya.");
+            return false; // Menghentikan pengiriman formulir
+        } else {
+            uniqueBuyers.add(buyerInfo);
+        }
+    }
+
+    return true; // Lanjutkan pengiriman formulir jika tidak ada kesalahan
+}
+
+document.getElementById("bookingForm").addEventListener("submit", function(event) {
+    if (!validateForm()) {
+        event.preventDefault(); // Mencegah pengiriman formulir jika validasi gagal
+    }
+});
+</script>
+
 </body>
 </html>
