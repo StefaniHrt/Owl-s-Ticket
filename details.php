@@ -58,7 +58,7 @@
         <img src="img/owlsticketlogo.png" alt="logo owl's ticket">
         <nav>
             <ul>
-                <li><a href="main_page.html">Main Page</a></li>
+                <li><a href="main_page.php">Main Page</a></li>
                 <li><a href="#">About Us</a></li>
                 <li><a href="#">FAQ</a></li>
             </ul>

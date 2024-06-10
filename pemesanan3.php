@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             echo "Tickets successfully booked!";
             // Optionally, redirect to a success or confirmation page
-            header('Location: confirmation.php');
+            header('Location: booking.php');
             exit();
 
         } catch (Exception $e) {
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
     
-    <a href="detail_iu.html" class="backbutton">
+    <a href="details.php" class="backbutton">
         <img src="img/back.png" alt="backbutton">
     </a>
     
@@ -171,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <?php foreach ($seatData as $seatID => $data): ?>
             <p>Seat Category: <?php echo htmlspecialchars($data['nama_kursi']); ?> - Price: Rp. <?php echo number_format($data['harga'], 0, ',', '.'); ?>,- Quantity: <?php echo $data['quantity']; ?></p>
         <?php endforeach; ?>
-        <form id="bookingForm" action="payment.php" method="post" enctype="multipart/form-data">
+        <form id="bookingForm" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" enctype="multipart/form-data">
             <h4>JUMLAH TIKET</h4>
             <p>Jumlah Tiket: <?php echo array_sum(array_column($seatData, 'quantity')); ?></p>
             <input type="hidden" id="ticketQuantity" name="ticketQuantity" value="<?php echo array_sum(array_column($seatData, 'quantity')); ?>" required>

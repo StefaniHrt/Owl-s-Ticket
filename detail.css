@@ -1,6 +1,6 @@
 header {
-    /* background-color: rgb(89, 62, 168); */
-    background-color: rgb(172,59,99);
+    background-color: rgb(89, 62, 168);
+    /* background-color: rgb(172,59,99); */
     color:#AC3B61;
     /* padding: 5px; */
     display: flex;
@@ -39,8 +39,8 @@ nav ul li a:hover {
 
 body{
     /* background-image: linear-gradient(to bottom right,rgb(29, 38, 125,1),rgb(92, 70, 156,0.5)); */
-    /* background-image: url(img/bg_main.jpg); */
-    background-color: rgb(238,218,209);
+    background-image: url(img/bg_main.jpg);
+    /* background-color: rgb(238,218,209); */
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: 100%;
@@ -61,7 +61,7 @@ body{
 .step{
     margin: 5px auto;
     text-align: center;
-    background-color: rgba(237,200,184,255);
+    background-color: rgb(255, 255, 255, 0.5);
     border-radius: 20px;
 }
 
@@ -70,13 +70,13 @@ body{
 }
 
 .step:nth-child(2){
-    background-color: rgba(237,200,184,255);
+    background-color: rgb(255, 255, 255, 0.5);
     /* box-shadow: 6px 6px yellow; */
     scale: 1.2;
     margin: 5px 25px;
     p{
         color: white;
-        text-shadow: 2px 2px rgb(22,64,111);
+        text-shadow: 2px 2px #0C134F;
         /* -webkit-text-stroke: 1px #0C134F; */
     }
 }
@@ -88,12 +88,12 @@ h1 {
     margin: 0px;
     margin-left: 5%;
     margin-top: 1%;
-    /* color: #D4ADFC; */
-    color: rgb(22,64,111);
+    color: #D4ADFC;
+    /* color: rgb(22,64,111); */
 }
 
 h2, h3{
-    color:rgb(22,64,111);
+    /* color:rgb(22,64,111); */
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -113,7 +113,7 @@ h2, h3{
 }
 
 hr{
-    border: 1px solid rgb(22,64,111);
+    border: 1px solid #0C134F;
 }
 
 .back_detail{
@@ -137,8 +137,8 @@ hr{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 15px;
     background-color: transparent;
-    /* background-color: rgba(181, 109, 253, 0.85); */
-    background-color: rgba(237,200,184,255);
+    background-color: rgba(181, 109, 253, 0.85);
+    /* background-color: rgba(237,200,184,255); */
     padding: 10px;
     border-radius: 20px;
 }
@@ -160,9 +160,8 @@ hr{
 }
 
 .tiket{
-    /* background-color: #D4ADFC; */
-    background-color: rgb(152,174,186);
-    border: 1px solid rgb(22,64,111);
+    background-color: #D4ADFC;
+    border: 1px solid #0C134F;
     border-radius: 20px;
     margin: 10px;
     padding: 10px;
@@ -173,7 +172,7 @@ hr{
         color: red;
     }
     hr{
-        border: 1px dashed rgb(22,64,111); 
+        border: 1px dashed #0C134F; 
     }
 }
 
@@ -194,7 +193,7 @@ input[type="number"] {
 
 
 #pesan{
-    background-color: rgb(22,64,111);
+    background-color: #0C134F;
     border: none;
     border-radius: 50px;
     color: white;
@@ -210,12 +209,12 @@ input[type="number"] {
 }
 
 #pesan:hover{
-    color: rgb(22,64,111);
-    background-color: #6c78fa;
+    color: #0C134F;
+    background-color: #4a59ff;
 }
 
 footer{
-    background-color: rgb(172,59,99);
+    background-color: rgb(89, 62, 168);
     color:white;
     text-align: center;
     height: 50px;
