@@ -4,7 +4,7 @@ include 'connection.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
-    $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
+    $password = trim($_POST['password']);  // Tanpa hashing
 
     $sql = "INSERT INTO user (username, email, password) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);

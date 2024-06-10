@@ -2,13 +2,14 @@
     session_start();
     include 'connection.php'; 
 
-    if(isset($_SESSION['id_user'])) {
-        $user_id = $_SESSION['id_user'];
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    // if(isset($_SESSION['id_user'])) {
+        $user_id = $_SESSION['ID_user'];
         $sql = "SELECT p.*, t.nama_lengkap, t.email, t.no_telp, k.nama_konser, kur.nama_kursi
                 FROM Pemesanan p
                 JOIN Tiket t ON p.ID_pemesanan = t.ID_pemesanan
                 JOIN Konser k ON p.ID_konser = k.ID_konser
-                JOIN Kursi kur ON p.ID_kursi = ku.ID_kursi
+                JOIN Kursi kur ON p.ID_kursi = kur.ID_kursi
                 WHERE p.ID_user = $user_id";
         $result = mysqli_query($conn, $sql);
         
