@@ -1,5 +1,5 @@
 <?php
-session_start(); // Memulai sesi
+session_start(); 
 include 'connection.php';
 ?>
 
@@ -13,6 +13,7 @@ include 'connection.php';
     <script>
         function showAlert(message) {
             alert(message);
+            window.location.href = 'main_page.php'; 
         }
     </script>
 </head>
@@ -21,7 +22,7 @@ include 'connection.php';
         <header>
             <img src="img/owlsticketlogo.png" alt="logo owl's ticket">
             <form method="POST" action="">
-                <input type="text" name="search" class="search" placeholder="Search the Concert">
+                <input type="text" name="search_term" class="search" placeholder="Search by Location, Date or Artist">
                 <button type="submit" name="submit_search"><img src="img/search.png"></button>
             </form>
             <nav>
@@ -30,6 +31,7 @@ include 'connection.php';
                     <li><a href="#">FAQ</a></li>
                     <?php
                     if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+                        echo '<li><a href="booking.php">My Tickets</a></li>';
                         echo '<li><a href="logout.php">Log Out</a></li>';
                     } else {
                         echo '<li><a href="login.php">Log In</a></li>';
@@ -75,35 +77,31 @@ include 'connection.php';
             <br>
             <?php
             if (isset($_POST['submit_search'])) {
-                $search = isset($_POST['search']) ? strtolower(trim($_POST['search'])) : '';
-                $search = mysqli_real_escape_string($conn, $search);
+                $search_term = isset($_POST['search_term']) ? trim($_POST['search_term']) : '';
+                $search_term = mysqli_real_escape_string($conn, $search_term);
 
-                $sql = "SELECT k.ID_konser, k.nama_konser, k.tanggal_awal, k.tanggal_akhir, k.venue, k.poster, 
+                $sql = "SELECT a.nama_artis, k.ID_konser, k.nama_konser, k.tanggal_awal, k.tanggal_akhir, k.venue, k.poster, k.lokasi,
                             MIN(c.harga) AS harga_terendah, MAX(c.harga) AS harga_tertinggi 
                         FROM konser k
                         JOIN kursi c ON k.ID_konser = c.ID_konser
                         LEFT JOIN artis_konser ak ON k.ID_konser = ak.ID_konser
-                        LEFT JOIN artis a ON ak.ID_artis = a.ID_artis
-                        WHERE k.tanggal_akhir >= CURDATE()";
+                        LEFT JOIN artis a ON ak.ID_artis = a.ID_artis";
 
-                if (!empty($search)) {
-                    $sql .= " AND ( 
-                                LOWER(a.nama_artis) LIKE '%$search%' OR 
-                                LOWER(k.lokasi) LIKE '%$search%' OR 
-                                LOWER(k.tanggal_awal) LIKE '%$search%' OR 
-                                LOWER(k.tanggal_akhir) LIKE '%$search%'
-                            )";
+                if (!empty($search_term)) {
+                    $sql .= " where (LOWER(a.nama_artis) LIKE '%$search_term%' 
+                            OR LOWER(k.lokasi) LIKE '%$search_term%' 
+                            OR LOWER(k.venue) LIKE '%$search_term%' 
+                            OR k.tanggal_awal LIKE '%$search_term%' 
+                            OR k.tanggal_akhir LIKE '%$search_term%')";
                 }
 
                 $sql .= " GROUP BY k.ID_konser
                           ORDER BY k.tanggal_awal DESC";
-
+                // echo $sql;
                 $result = mysqli_query($conn, $sql);
 
                 if ($result->num_rows == 0) {
                     echo "<script>showAlert('No matching results found.');</script>";
-                    $conn->close();
-                    exit;
                 }
             } else {
                 $sql = "SELECT k.ID_konser, k.nama_konser, k.tanggal_awal, k.tanggal_akhir, k.venue, k.poster, 
@@ -136,6 +134,8 @@ include 'connection.php';
                     echo "</tr>";
                     echo "</table>";
                 }
+            } else {
+                echo "<script>showAlert('No concerts available.');</script>";
             }
 
             $conn->close();
